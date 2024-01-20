@@ -1,12 +1,63 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Image, TextInput, Button, StyleSheet } from 'react-native';
+import firebase from 'firebase/compat/app'; // Import only the 'app' module
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';// Import storage from compat version
 
-export default function Save({ route }) {
-  const { image } = route.params;
+export default function Save({ route, navigation }) {
+  const [caption, setCaption] = useState('');
+
+  const uploadImage = async () => {
+    const uri = route.params.image;
+    const childPath = `post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`;
+    console.log(childPath);
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const task = firebase.storage().ref().child(childPath).put(blob);
+    const taskProgress = snapshot => {
+      console.log(`transferred: ${snapshot.bytesTransferred}`);
+    };
+
+    const taskCompleted = () => {
+      task.snapshot.ref.getDownloadURL().then(downloadURL => {
+        savePostData(downloadURL);
+        console.log(downloadURL);
+      });
+    };
+
+    const taskError = error => {
+      console.error(error);
+    };
+
+    task.on('state_changed', taskProgress, taskError, taskCompleted);
+  };
+
+  const savePostData = (downloadURL) => {
+    firebase.firestore().collection('posts')
+      .doc(firebase.auth().currentUser.uid)
+      .collection('userPosts')
+      .add({
+        downloadURL,
+        caption,
+        creation: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        navigation.popToTop();
+      })
+      .catch(error => {
+        console.error('Error saving post data:', error);
+      });
+  };
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={{ uri: route.params.image }} style={styles.image} />
+      <TextInput
+        placeholder='Write a Caption...'
+        onChangeText={caption => setCaption(caption)}
+      />
+      <Button title="Save" onPress={uploadImage} />
     </View>
   );
 }
@@ -21,6 +72,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    resizeMode: 'contain', // You can adjust the resizeMode as needed
+    resizeMode: 'contain',
   },
 });

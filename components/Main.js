@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser } from '../redux/actions/index';
+import { fetchUser , fetchUserPosts} from '../redux/actions/index';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import FeedScreen from './main/Feed';
@@ -22,6 +22,7 @@ export class Main extends Component {
     componentDidMount(){
 
         this.props.fetchUser();
+        this.props.fetchUserPosts();
     }
   render() {
     
@@ -61,6 +62,6 @@ export class Main extends Component {
 const mapStateToProps = (Store) => ({
     currentUser: Store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch)
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
