@@ -9,6 +9,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import FeedScreen from './main/Feed';
 
 import ProfileScreen from './main/Profile';
+import SearchScreen from './main/Search';
 
 import MaterialCommunityicons from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -35,6 +36,14 @@ export class Main extends Component {
             ),
           }}
           />
+           <Tab.Screen name="Search" component={SearchScreen} 
+          options={{
+            tabBarIcon: ({ color, size}) => (
+                <MaterialCommunityicons name='magnify' color={color} size={26}/>
+            ),
+          }}
+          />
+          
            <Tab.Screen name="Post" component={EmptyScreen}
            listeners={({ navigation }) => ({
             tabPress: event => {
