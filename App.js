@@ -17,7 +17,6 @@ import MainScreen from './components/Main';
 import AddScreen from './components/main/Add';
 import SaveScreen from './components/main/Save';
 import { useNavigation } from '@react-navigation/native';
-
 const Stack = createStackNavigator();
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -43,7 +42,7 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      setLoggedIn(!!user); // Using double negation to convert to boolean
+      setLoggedIn(!!user); 
       setLoaded(true);
     });
 

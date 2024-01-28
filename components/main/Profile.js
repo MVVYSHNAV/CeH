@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
-import firebase from 'firebase/app';
-import 'firebase/compat/auth';
+import firebase from 'firebase/compat/app';
+
 import { connect } from 'react-redux';
 require('firebase/firestore')
 
@@ -63,20 +63,21 @@ function Profile(props) {
         <Text> {user.email} </Text>
       </View>
       <View style={styles.containergallery}>
-        <FlatList
-         key={posts.length}
-          numColumns={4}
-          horizontal={false}
-          data={userPosts}
-          renderItem={({ item }) => (
-            <View  style={styles.containerimage} >
-            <Image
-              style={styles.image} 
-              source={{ uri: item.downloadURL }}
-            />
-            </View>
-          )}
-        />
+      <FlatList
+  key={userPosts.length}  
+  numColumns={4}
+  horizontal={false}
+  data={userPosts}
+  renderItem={({ item }) => (
+    <View style={styles.containerimage}>
+      <Image
+        style={styles.image}
+        source={{ uri: item.downloadURL }}
+      />
+    </View>
+  )}
+/>
+
       </View>
     </View>
   );
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
   posts: store.userState.posts,
+  auth: () => store.auth, // Adjust this line based on your state structure
 });
 
 export default connect(mapStateToProps, null)(Profile);
