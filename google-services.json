@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "396038799354",
+    "project_id": "our-philosophy-359114",
+    "storage_bucket": "our-philosophy-359114.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396038799354:android:2891ed55f0d96df1c4ee43",
+        "android_client_info": {
+          "package_name": "com.vyshnav.hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB6frITFboNIZrL6NnUsIzE9dCkVvqEdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

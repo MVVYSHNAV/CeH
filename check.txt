@@ -1,0 +1,42 @@
+nfo Fetching system and libraries information...
+System:
+  OS: Windows 11 10.0.22631
+  CPU: (8) x64 Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+  Memory: 2.33 GB / 15.84 GB
+Binaries:
+  Node:
+    version: 20.11.0
+    path: C:\Program Files\nodejs\node.EXE
+  Yarn: Not Found
+  npm:
+    version: 10.2.5
+    path: C:\Program Files\nodejs\npm.CMD
+  Watchman: Not Found
+SDKs:
+  Android SDK: Not Found
+  Windows SDK: Not Found
+IDEs:
+  Android Studio: AI-231.9392.1.2311.11076708
+  Visual Studio:
+    - 17.8.34322.80 (Visual Studio Community 2022)
+Languages:
+  Java: Not Found
+  Ruby:
+    version: 3.2.2
+    path: C:\Ruby32-x64\bin\ruby.EXE
+npmPackages:
+  "@react-native-community/cli": Not Found
+  react:
+    installed: 18.2.0
+    wanted: 18.2.0
+  react-native:
+    installed: 0.72.5
+    wanted: 0.72.5
+  react-native-windows: Not Found
+npmGlobalPackages:
+  "*react-native*": Not Found
+Android:
+  hermesEnabled: Not found
+  newArchEnabled: Not found
+iOS:
+  hermesEnabled: Not found

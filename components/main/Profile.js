@@ -1,23 +1,73 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import firebase from 'firebase/compat/app';
+
 import { connect } from 'react-redux';
+require('firebase/firestore')
 
 function Profile(props) {
-  const { currentUser, posts } = props;
-  console.log({ currentUser, posts });
+  const [userPost, setUserPosts] = useState();
+  const [user, setUser] = useState(null);
+
+  //fetch user current 
+  useEffect(() => {
+    const { currentUser, posts } = props;
+    console.log({ currentUser, posts })
+
+    if(props.route.params.uid === firebase.auth().currentUser.uid){
+      setUser(currentUser)
+      setUserPosts(posts)
+
+    }
+    else {
+      firebase.firestore()
+      .collection("users")
+      .doc(props.auth().currentUser.uid)
+      .get()
+      .then((snapshot) => {
+          if(snapshot.exists){
+            setUser(snapshot.data());
+          }
+          else{
+              console.log('does not exist')
+          }
+
+      })
+      firebase.firestore()
+        .collection("posts")
+        .doc(props.auth().currentUser.uid)
+        .collection("userPosts")
+        .orderBy("creation", "asc") 
+        .get()
+        .then((snapshot) => {
+            let posts = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return{id, ...data}
+            })
+           setUserPosts(posts)
+
+        })
+
+    }
+  })
+  
+    if(user === null) {
+      return <View/>
+    }
 
   return (
     <View style={styles.container}>
       <View style={styles.containerinfo}>
-        <Text> {currentUser.name} </Text>
-        <Text> {currentUser.email} </Text>
+        <Text> {user.name} </Text>
+        <Text> {user.email} </Text>
       </View>
       <View style={styles.containergallery}>
         <FlatList
          key={posts.length}
           numColumns={4}
           horizontal={false}
-          data={posts}
+          data={userPost}
           renderItem={({ item }) => (
             <View  style={styles.containerimage} >
             <Image
@@ -35,7 +85,6 @@ function Profile(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
   },
   containerinfo: {
     margin: 20,

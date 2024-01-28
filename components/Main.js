@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import firebase from 'firebase/compat';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -36,7 +36,7 @@ export class Main extends Component {
             ),
           }}
           />
-           <Tab.Screen name="Search" component={SearchScreen} 
+           <Tab.Screen name="Search" component={SearchScreen}  navigation= {this.props.navigation}
           options={{
             tabBarIcon: ({ color, size}) => (
                 <MaterialCommunityicons name='magnify' color={color} size={26}/>
@@ -57,13 +57,22 @@ export class Main extends Component {
             ),
           }}
           />
-           <Tab.Screen name="Profile" component={ProfileScreen} 
-          options={{
-            tabBarIcon: ({ color, size}) => (
-                <MaterialCommunityicons name='account-circle' color={color} size={26}/>
-            ),
-          }}
-          />
+        
+        <Tab.Screen
+   name="Profile"
+   component={ProfileScreen}
+   listeners={({ navigation }) => ({
+     tabPress: event => {
+       event.preventDefault();
+       navigation.navigate("profile", { uid: firebase.auth().currentUser.uid });
+     },
+   })}
+   options={{
+     tabBarIcon: ({ color, size }) => (
+       <MaterialCommunityicons name="account-circle" color={color} size={26} />
+     ),
+   }}
+ />
         </Tab.Navigator>
       );
   }
