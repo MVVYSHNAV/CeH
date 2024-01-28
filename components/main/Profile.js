@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
-import firebase from 'firebase/compat/app';
-
+import firebase from 'firebase/app';
+import 'firebase/compat/auth';
 import { connect } from 'react-redux';
 require('firebase/firestore')
 
 function Profile(props) {
-  const [userPost, setUserPosts] = useState();
+  const [userPosts, setUserPosts] = useState();
   const [user, setUser] = useState(null);
 
   //fetch user current 
@@ -50,7 +50,7 @@ function Profile(props) {
         })
 
     }
-  }, [posts.route.params.uid])
+  }, [props.route.params.uid])
   
     if(user === null) {
       return <View/>
@@ -67,7 +67,7 @@ function Profile(props) {
          key={posts.length}
           numColumns={4}
           horizontal={false}
-          data={userPost}
+          data={userPosts}
           renderItem={({ item }) => (
             <View  style={styles.containerimage} >
             <Image
