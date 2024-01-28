@@ -50,7 +50,7 @@ function Profile(props) {
         })
 
     }
-  })
+  }, [posts.route.params.uid])
   
     if(user === null) {
       return <View/>

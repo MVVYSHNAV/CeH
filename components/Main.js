@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import firebase from 'firebase/compat';
+import firebase from 'firebase/compat/app';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
