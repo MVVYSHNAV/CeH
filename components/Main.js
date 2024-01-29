@@ -3,7 +3,7 @@ import firebase from 'firebase/compat/app';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchUser , fetchUserPosts} from '../redux/actions/index';
+import { fetchUser , fetchUserPosts, fetchUserFollowing, clearData} from '../redux/actions/index';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 import FeedScreen from './main/Feed';
@@ -22,9 +22,10 @@ const Tab = createMaterialBottomTabNavigator();
 
 export class Main extends Component {
     componentDidMount(){
-
+      this.props.clearData();
         this.props.fetchUser();
         this.props.fetchUserPosts();
+        this.props.fetchUserFollowing();
     }
   render() {
     
@@ -61,7 +62,7 @@ export class Main extends Component {
         
         <Tab.Screen
    name="Profile"
-   component={ProfileScreen}
+   component={ProfileScreen}  navigation= {this.props.navigation}
    listeners={({ navigation }) => ({
      tabPress: event => {
        event.preventDefault();
@@ -81,6 +82,6 @@ export class Main extends Component {
 const mapStateToProps = (Store) => ({
     currentUser: Store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts}, dispatch)
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts , fetchUserFollowing, clearData}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
