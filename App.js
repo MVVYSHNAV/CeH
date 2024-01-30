@@ -72,7 +72,7 @@ const App = () => {
             </>
           ) : (
             <>
-              <Stack.Screen name="Main" component={MainScreen}  />
+              <Stack.Screen name="Ceh" component={MainScreen}  />
               <Stack.Screen name="Add" component={AddScreen}  />
               <Stack.Screen name="Save" component={SaveScreen} />
             </>

@@ -33,6 +33,13 @@ function Feed(props) {
           <View style={styles.containerimage}>
             <Text style={styles.container}> {item.user.name}</Text>
             <Image style={styles.image} source={{ uri: item.downloadURL }} />
+
+            <Text
+            onPress={() => props.navigation.navigate('Comment',
+            { postId: item.id })
+            }>
+               View Comments
+                </Text>
           </View>
         )}
       />
@@ -51,11 +58,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerimage: {
-    flex: 1 / 3,
+    flex: 1/ 0.5,
   },
   image: {
     flex: 1,
-    aspectRatio: 1 / 1,
+    aspectRatio: 1/1,
+    margin: 5,
   },
 });
 
