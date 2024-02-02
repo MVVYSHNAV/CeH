@@ -16,6 +16,7 @@ import LoginScreen from './components/auth/Login';
 import MainScreen from './components/Main';
 import AddScreen from './components/main/Add';
 import SaveScreen from './components/main/Save';
+import CommentScreen from './components/main/Comment';
 import { useNavigation } from '@react-navigation/native';
 const Stack = createStackNavigator();
 
@@ -75,6 +76,7 @@ const App = () => {
               <Stack.Screen name="Ceh" component={MainScreen}  />
               <Stack.Screen name="Add" component={AddScreen}  />
               <Stack.Screen name="Save" component={SaveScreen} />
+              <Stack.Screen name="Comment" component={CommentScreen} />
             </>
           )}
         </Stack.Navigator>

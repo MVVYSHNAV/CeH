@@ -1,4 +1,4 @@
-import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE,USERS_POSTS_STATE_CHANGE, CLEAR_DATA} from '../constants/index'
+import { USER_STATE_CHANGE, USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE, USERS_DATA_STATE_CHANGE,USERS_POSTS_STATE_CHANGE,USERS_LIKES_STATE_CHANGE, CLEAR_DATA} from '../constants/index'
 import firebase from 'firebase/compat/app'
 import { SnapshotViewIOSComponent } from 'react-native'
 require('firebase/firestore')
@@ -104,7 +104,35 @@ export function fetchUsersFollowingPosts(uid) {
                     const id = doc.id;
                     return { id, ...data, user }
                 })
+                for(let i = 0;i< posts.lenght; i++) {
+                    dispatch(fetchUsersFollowingLikes(uid,posts[i].id))
+                }
                 dispatch({ type: USERS_POSTS_STATE_CHANGE, posts, uid })
+            })
+    })
+}
+
+
+export function fetchUsersFollowingLikes(uid, postId) {
+    return ((dispatch, getState) => {
+        firebase.firestore()
+            .collection("posts")
+            .doc(uid)
+            .collection("userPosts")
+            .doc(postId)
+            .collection("Likes")
+            .doc(firebase.auth().currentUser.uid)
+            .orderBy("creation", "asc")
+            .onSnapshot((snapshot) => {
+                const postId = snapshot.ZE.path.segments[3];
+                
+                let currentUserLike = false;
+                if(snapshot.exists){
+                    currentUserLike = true;
+                }
+
+
+                dispatch({ type: USERS_LIKES_STATE_CHANGE, postId, uid })
             })
     })
 }
