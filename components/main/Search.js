@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { View, Text, TextInput, FlatList, TouchableOpacity } from 'react-native'
+import { View,  FlatList, TouchableOpacity} from 'react-native'
+import {TextInput, Card, Avatar } from 'react-native-paper';
 
 import firebase from 'firebase/compat/app';
 require('firebase/firestore');
@@ -22,8 +23,9 @@ export default function Search(props) {
             })
     }
     return (
-        <View>
-            <TextInput
+        <View style={{padding: "2%"}}>
+            <TextInput 
+            label="Search"
                 placeholder="Type Here..."
                 onChangeText={(search) => fetchUsers(search)} />
 
@@ -34,7 +36,14 @@ export default function Search(props) {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => props.navigation.navigate("Profile", {uid: item.id})}>
-                        <Text>{item.name}</Text>
+                        <Card>
+                        <Card.Title
+                        style={{marginBottom:"4%"}}
+                        title = {item.name}
+                        left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                        />
+                        </Card>
+
                     </TouchableOpacity>
 
                 )}
@@ -42,3 +51,4 @@ export default function Search(props) {
         </View>
     )
 }
+

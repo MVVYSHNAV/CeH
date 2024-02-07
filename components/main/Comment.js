@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, FlatList, Button, TextInput } from 'react-native'
+import { View, Text, FlatList} from 'react-native'
+import { TextInput, Button, Card , Avatar} from 'react-native-paper';
 
 import firebase from 'firebase/compat/app';
 require('firebase/firestore')
@@ -67,36 +68,44 @@ function Comment(props) {
                 text
             })
     }
+  
 
     return (
         <View>
+                 <View>
+                            <TextInput style={{marginBottom:"4%"}}
+                                label="Comments"
+                                value={text}
+                                onChangeText={(text) => setText(text)} />
+                            <Button style={{marginBottom:"4%"}}
+                                mode="contained"
+                                buttonColor='#062471'
+                                textColor='#FFFFFF'
+                                multiiline='true'
+                                onPress={() => onCommentSend()}
+                            > Send </Button>
+                </View>
+           
             <FlatList
                 numColumns={1}
                 horizontal={false}
                 data={comments}
                 renderItem={({ item }) => (
-                    <View>
+                    <Card style={{marginBottom:"4%"}}>
                         {item.user !== undefined ?
-                            <Text>
-                                {item.user.name}
-                            </Text>
+                            <Card.Title
+                            mode="outlined"
+                               title = {item.user.name}
+                               left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                               subtitle = {item.text}
+                            />
                             : null}
-                        <Text>{item.text}</Text>
-                    </View>
+
+                    </Card>
                 )}
             />
 
-            <View>
-                <TextInput
-                    placeholder='comment...'
-                    onChangeText={(text) => setText(text)} />
-                <Button
-                    onPress={() => onCommentSend()}
-                    title="Send"
-                />
-            </View>
-
-        </View>
+    </View>
     )
 }
 

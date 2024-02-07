@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native'
+import { StyleSheet, View, Image, FlatList } from 'react-native'
+import { Avatar, Card } from 'react-native-paper';
+import { Button,  Text,IconButton} from 'react-native-paper';
+
+
 
 import firebase from 'firebase/compat/app'
 require('firebase/firestore')
@@ -13,7 +17,7 @@ function Feed(props) {
             props.feed.sort(function (x, y) {
                 return x.creation - y.creation;
             })
-            setPosts(props.feed);
+            setPosts(props.feed.map((feed)=>({...feed,liked:false})));
         }
         console.log(posts)
 
@@ -28,12 +32,20 @@ function Feed(props) {
             .collection("likes")
             .doc(firebase.auth().currentUser.uid)
             .set({})
+        // const getPost=posts.filter((post)=>postId===post.id);
+        // getPost.liked=true;
+        setPosts((prev)=>{
+            return prev.map(post=>{
+                if(post.id===postId)
+                 return {...post,liked:!post.liked
+                }
+                return post;
+            });
+        })
+        
     }
     const onDislikePress = (userId, postId) => {
-      console.log("Dislike Pressed for post:", postId);
-      console.log("userId");
-  
-      firebase.firestore()
+        firebase.firestore()
           .collection("posts")
           .doc(userId)
           .collection("userPosts")
@@ -45,40 +57,57 @@ function Feed(props) {
     return (
         <View style={styles.container}>
             <View style={styles.containerGallery}>
-                <FlatList
+                {posts && <FlatList
                     numColumns={1}
                     horizontal={false}
                     data={posts}
-                    renderItem={({ item }) => (
+                    renderItem={({ item,index }) => (
+                        <Card key={index}>
+                           
                         <View
                             style={styles.containerImage}>
-                            <Text style={styles.container}>{item.user.name}</Text>
+                            <Card.Title 
+                           title = {item.user.name}
+                            left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                             />
+                             <Text variant="titleMedium" style = {{ width:"80",height:"40",  marginLeft: 30 }}> {item.caption}</Text>
                             <Image
                                 style={styles.image}
                                 source={{ uri: item.downloadURL }}
                             />
                             { item.currentUserLike ?
                                 (
-                                    <Button
-                                        title="Dislike"
-                                        onPress={() => onDislikePress(item.user.uid, item.id)} />
+                                    <Button 
+                                        style={{borderRadius:0}}                                       
+                                        mode="contained-tonal"
+                                        buttonColor="lightpurple"
+                                        icon="dislike"
+                                        onPress={() => onDislikePress(item.user.uid, item.id)}> Dislike  </Button>
                                 )
                                 :
                                 (
-                                    <Button
-                                        title="Like"
-                                        onPress={() => onLikePress(item.user.uid, item.id)} />
+                                    <IconButton style={{margin:"2%",borderRadius:0}}
+                                    mode="elevated"
+                                    buttonColor="#FFF3DA"
+                                    iconColor={item.liked ?"red":"black"}
+                                    icon={item.liked?"heart":"heart-outline"}
+                                    
+                                    
+                                        onPress={() => onLikePress(item.user.uid, item.id)} /> 
                                 )
                             }
-                            <Text
+                            <Text 
+                                style={{textAlign:"center", marginBottom: "4%"}}
+                                variant="titleMedium"
                                 onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })}>
                                 View solutions..
                                 </Text>
                         </View>
+                        </Card>
 
                     )}
 
-                />
+                />}
             </View>
         </View>
 
@@ -88,15 +117,19 @@ function Feed(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: "2%",
+        
+
     },
     containerInfo: {
         margin: 20
     },
     containerGallery: {
-        flex: 1
+        flex: 1,
     },
     containerImage: {
-        flex: 1 / 0.5
+        flex: 1 / 0.5,
+        marginBottom: "5%"
 
     },
     image: {

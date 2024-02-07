@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { IconButton, Button , Card} from 'react-native-paper';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -74,9 +75,11 @@ export default function Add({ navigation }) {
         <Camera ref={(ref) => setCamera(ref)} style={styles.fixedRatio} type={type} ratio={'1:1'} onCameraReady={handleCameraReady} />
       </View>
 
-      <Button
-        style={{ flex: 0.1, alignSelf: 'flex-end', alignItems: 'center' }}
-        title='Flip Image'
+      
+      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+      <IconButton
+      icon="camera-front-variant"
+        mode="contained"
         onPress={() => {
           setType(
             type === Camera.Constants.Type.back
@@ -85,19 +88,33 @@ export default function Add({ navigation }) {
           );
         }}
       />
-      <Button title='Snap' onPress={takePicture} />
-      <Button title='Pick Image' onPress={pickImage} />
-      <Button title='Save' onPress={() => navigation.navigate('Save', { image })} />
+      <IconButton
+      mode="contained"
+      style={{marginBottom:"4%"}}
+      icon="camera"
+      onPress={takePicture} /> 
+      <IconButton
+      mode="contained" 
+      style={{marginBottom:"4%"}}
+      icon="folder-plus"
+      onPress={pickImage} />
+      <IconButton 
+      mode="contained" 
+      icon="floppy"
+      style={{marginBottom:"4%"}}
+      onPress={() => navigation.navigate('Save', { image })}/> 
 
-      {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
+      </View>
+      {image && <Image source={{ uri: image }} style={{ flex: 1, marginHorizontal: "2%" }} />}
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   cameracontainer: {
-    flex: 1,
     flexDirection: 'row',
+    padding: "2%"
   },
   fixedRatio: {
     flex: 1,
@@ -106,5 +123,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+
   },
 });

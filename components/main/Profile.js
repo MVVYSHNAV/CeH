@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native'
+import { StyleSheet, View, Text, Image, FlatList } from 'react-native'
+import { Button, Card, Avatar} from 'react-native-paper';
 import firebase from 'firebase/compat/app';
 
 require('firebase/firestore')
@@ -81,29 +82,35 @@ function Profile(props) {
     return (
         <View style={styles.container}>
             <View style={styles.containerInfo}>
-                <Text>{user.name}</Text>
-                <Text>{user.email}</Text>
+                <Card>
+                <Card.Title
+                title = {user.name}
+                subtitle = {user.email}
+                left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                />
+                </Card>
 
                 {props.route.params.uid !== firebase.auth().currentUser.uid ? (
                     <View>
                         {following ? (
-                            <Button
-                                title="Following"
+                            <Button mode='contained'
+                        
                                 onPress={() => onUnfollow()}
-                            />
+                            > Following </Button>
                         ) :
                             (
                                 <Button
-                                    title="Follow"
+                                    mode="contained-tonal"
                                     onPress={() => onFollow()}
-                                />
+                                > Follow </Button>
                             )}
                     </View>
                 ) :
                     <Button
-                        title="Logout"
+                        mode="contained-tonal"
                         onPress={() => onLogout()}
-                    />}
+                    > Logout
+                    </Button>}
             </View>
 
             <View style={styles.containerGallery}>
@@ -135,14 +142,17 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     containerInfo: {
-        margin: 20
+        margin: 10,
+        marginBottom: "4%"
     },
     containerGallery: {
-        flex: 1
+        flex: 1,
+        marginLeft: "2%",
+        marginRight: "2%"
     },
     containerImage: {
-        flex: 1 / 3
-
+        flex: 1 / 1,
+        margin: 2
     },
     image: {
         flex: 1,

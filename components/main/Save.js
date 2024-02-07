@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 import firebase from 'firebase/compat/app'; // Import only the 'app' module
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';// Import storage from compat version
@@ -54,10 +55,18 @@ export default function Save({ route, navigation }) {
     <View style={styles.container}>
       <Image source={{ uri: route.params.image }} style={styles.image} />
       <TextInput
+      mode="outlined"
+        label='Caption'
         placeholder='Write a Caption...'
+        style={{width:"100%", }}
         onChangeText={caption => setCaption(caption)}
       />
-      <Button title="Save" onPress={uploadImage} />
+      <Button 
+      mode="elevated"
+      buttonColor='#0A5D99'
+      textColor='white'
+      style={{width:"100%", marginTop: "4%", marginBottom: "4%"}}
+      onPress={uploadImage}> Save </Button>
     </View>
   );
 }
@@ -67,6 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: "2%"
   },
   image: {
     flex: 1,

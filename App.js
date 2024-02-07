@@ -20,6 +20,7 @@ import CommentScreen from './components/main/Comment';
 import { useNavigation } from '@react-navigation/native';
 const Stack = createStackNavigator();
 
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const firebaseConfig = {
@@ -40,6 +41,7 @@ if (firebase.apps.length === 0) {
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
