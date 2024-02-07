@@ -59,6 +59,7 @@ export default function Save({ route, navigation }) {
         label='Caption'
         placeholder='Write a Caption...'
         style={{width:"100%", }}
+        value={caption}
         onChangeText={caption => setCaption(caption)}
       />
       <Button 

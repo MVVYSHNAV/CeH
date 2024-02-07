@@ -43,12 +43,14 @@ export class Login extends Component {
           label="Eamil"
           placeholder='vyshnavdev@gmail.com'
           mode='outlined'
+          value={this.state.email}
           onChangeText={(email) => this.setState({ email })}
         />
         <TextInput
           label="Password"
           mode='outlined'
           secureTextEntry={true}
+          value={this.state.password}
           onChangeText={(password) => this.setState({ password })}
           
         />

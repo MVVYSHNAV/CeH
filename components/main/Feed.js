@@ -68,7 +68,16 @@ function Feed(props) {
                             style={styles.containerImage}>
                             <Card.Title 
                            title = {item.user.name}
-                            left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                           left={() => (
+                            <Avatar.Image
+                              size={50}
+                              source={
+                                imageUrl
+                                  ? { uri: imageUrl }
+                                  : require('../../assets/splash.png') // Use default image if imageUrl is null
+                              }
+                            />
+                          )}
                              />
                              <Text variant="titleMedium" style = {{ width:"80",height:"40",  marginLeft: 30 }}> {item.caption}</Text>
                             <Image
