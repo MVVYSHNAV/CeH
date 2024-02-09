@@ -9,23 +9,23 @@ require('firebase/firestore');
 export default function Search(props) {
   const [users, setUsers] = useState([]);
 
-  const fetchUsers = search => {
-    firebase
-      .firestore()
-      .collection('users')
-      .where('name', '>=', search)
-      .get()
-      .then(snapshot => {
-        let users = snapshot.docs.map(doc => {
+const fetchUsers = search => {
+  const searchLower = search.toLowerCase(); // Convert search query to lowercase
+  firebase
+    .firestore()
+    .collection('users')
+    .get()
+    .then(snapshot => {
+      let users = snapshot.docs
+        .map(doc => {
           const data = doc.data();
           const id = doc.id;
           return { id, ...data };
-        });
-        setUsers(users);
-
-        
-      });
-  };
+        })
+        .filter(user => user.name.toLowerCase().includes(searchLower)); // Filter users based on lowercase names
+      setUsers(users);
+    });
+  }
 
   return (
     <View style={{ padding: '2%' }}>
