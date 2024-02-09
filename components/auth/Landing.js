@@ -12,6 +12,7 @@ export default function Landing( {navigation } ) {
       <ImageBackground source={image} style={{resizemode: "cover",flex: 1, justifyContent: 'center  '}}>
       <View style={styles.containerland2}>
                 <Text style={{textAlign:"center"}} variant='displayLarge'> Ceh </Text>
+                <Text style={{textAlign:"center", marginTop: 10}} variant='headlineMedium'>Collobrative XpertiseHub  </Text>  
                 <Text style={{textAlign:"center"}} variant='labelMedium'>#join with amoung you mingle with others </Text>  
                       <View style={styles.btncontainer}>        
                           <Button style={styles.containerbtn} 

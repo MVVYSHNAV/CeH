@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList} from 'react-native'
-import { TextInput, Button, Card , Avatar} from 'react-native-paper';
+import { TextInput, Button, Card , Avatar,  Chip} from 'react-native-paper';
 
 import firebase from 'firebase/compat/app';
 require('firebase/firestore')
@@ -13,6 +13,7 @@ function Comment(props) {
     const [comments, setComments] = useState([])
     const [postId, setPostId] = useState("")
     const [text, setText] = useState("")
+   
 
     useEffect(() => {
 
@@ -96,7 +97,22 @@ function Comment(props) {
                             <Card.Title
                             mode="outlined"
                                title = {item.user.name}
-                               left={(props) => <Avatar.Icon {...props} icon="folder" />}
+                               left={() => (
+                                <Avatar.Image
+                                  size={50}
+                                  source={
+                                      item.image
+                                        ? { uri: item.image }
+                                        : require('../../assets/splash.png') // Use default image if imageUrl is null
+                                    } 
+                                />
+                              )}
+                            //    right={() => (
+              
+                            //     <Chip icon='information'  onPress={() => console.log('Pressed')}style={{marginRight: 5, paddingRight: 8, paddingLeft: 8, marginTop: 20}}> 
+                            //     Role: {user.role} 
+                            //     </Chip>
+                            //   )}
                                subtitle = {item.text}
                             />
                             : null}

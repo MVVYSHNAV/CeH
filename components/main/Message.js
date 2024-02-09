@@ -7,7 +7,7 @@ const Message = () => {
   return(<Card>
     <Card.Actions>
         <Text> You should follow the users.. </Text>
-      <Button onPress={()=>navigation.navigate("Search")}>Ok</Button>
+      <Button onPress={()=>navigation.navigate("Search")}>Explore</Button>
     </Card.Actions>
   </Card>);
 }

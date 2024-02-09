@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Alert } from 'react-native';
 import { Button, TextInput, Avatar } from 'react-native-paper';
 import firebase from 'firebase/compat/app';
 import * as ImagePicker from 'expo-image-picker';
+
 
 export class Register extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export class Register extends Component {
       email: '',
       password: '',
       name: '',
+      role: '',
       image: null, // Added state for image URI
     };
 
@@ -33,54 +35,59 @@ export class Register extends Component {
   };
 
   // Function to handle user sign up
-  onSignUp() {
-    const { email, password, name, image } = this.state;
+// Function to handle user sign up
+onSignUp() {
+  const { email, password, name, role, image } = this.state;
 
-    if(!image)return;
-    // Step 1: Upload image to Firebase Storage
-    const uploadImage = async () => {
-      try {
-        const response = await fetch(image);
-        const blob = await response.blob();
-        const imageName = `${Date.now()}-${name}`;
+  if (!image) return;
+  // Step 1: Upload image to Firebase Storage
+  const uploadImage = async () => {
+    try {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const imageName = `${Date.now()}-${name}`;
 
-        const ref = firebase.storage().ref().child(`profile_images/${imageName}`);
-        await ref.put(blob);
+      const ref = firebase.storage().ref().child(`profile_images/${imageName}`);
+      await ref.put(blob);
 
-        return ref.getDownloadURL();
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        throw error;
-      }
-    };
+      return ref.getDownloadURL();
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  };
 
-    // Step 2: After image upload, save user data including image URL to Firestore
-    uploadImage()
-      .then(imageuri => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(result => {
-            firebase.firestore().collection("users")
-              .doc(result.user.uid)
-              .set({
-                name,
-                email,
-                image: imageuri // Save image URL to Firestore
-              })
-              .then(() => {
-                console.log("User registered successfully!");
-              })
-              .catch(error => {
-                console.error("Error saving user data:", error);
-              });
-          })
-          .catch(error => {
-            console.error("Error creating user:", error);
-          });
-      })
-      .catch(error => {
-        console.error('Error signing up:', error);
-      });
-  }
+
+  // Step 2: After image upload, save user data including image URL to Firestore
+  uploadImage()
+    .then(imageuri => {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(result => {
+          firebase.firestore().collection("users")
+            .doc(result.user.uid)
+            .set({
+              name,
+              email,
+              role,
+              image: imageuri // Save image URL to Firestore
+            })
+            .then(() => {
+              console.log("User registered successfully!");
+              // Show alert to confirm user registration
+              Alert.alert('Success', 'User registered successfully!');
+            })
+            .catch(error => {
+              console.error("Error saving user data:", error);
+            });
+        })
+        .catch(error => {
+          console.error("Error creating user:", error);
+        });
+    })
+    .catch(error => {
+      console.error('Error signing up:', error);
+    });
+}
 
   render() {
     const { image } = this.state;
@@ -97,6 +104,7 @@ export class Register extends Component {
                 value={this.state.name}
                 onChangeText={(name) => this.setState({ name })}
               />
+              
               <TextInput
                 label="Email"
                 mode="outlined"
@@ -110,7 +118,13 @@ export class Register extends Component {
                 secureTextEntry={true}
                 value={this.state.password}
                 onChangeText={(password) => this.setState({ password })}
-              />
+              /> 
+              <TextInput
+              label="Role"
+              mode="outlined"
+              value={this.state.role}
+              onChangeText={(role) => this.setState({ role })}
+            />
             </View>
             <View style={styles.containerbtn}>
               <Button
@@ -123,9 +137,10 @@ export class Register extends Component {
               <Button
                 mode="contained"
                 onPress={this.onSignUp}
-              >
+                >
                 Sign Up
               </Button>
+              
             </View>
           </View>
         </View>

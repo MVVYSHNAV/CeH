@@ -17,6 +17,7 @@ import MainScreen from './components/Main';
 import AddScreen from './components/main/Add';
 import SaveScreen from './components/main/Save';
 import CommentScreen from './components/main/Comment';
+import EditScreen from './components/main/EditP'
 import Onboardconn from './components/Onboardconn';
 const Stack = createStackNavigator();
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -98,6 +99,8 @@ const App = () => {
               <Stack.Screen name="Add" component={AddScreen}  />
               <Stack.Screen name="Save" component={SaveScreen} />
               <Stack.Screen name="Comment" component={CommentScreen} />
+              <Stack.Screen name="Edit" component={EditScreen} />
+
             </>
           )}
         </Stack.Navigator>

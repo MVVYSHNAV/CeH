@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
-import { Button, Card, Avatar } from 'react-native-paper';
+import { StyleSheet, View,  Image, FlatList } from 'react-native';
+import { Button, Card, Avatar,Text, Badge, Chip } from 'react-native-paper';
 import firebase from 'firebase/compat/app';
+import { useNavigation } from '@react-navigation/native';
 
 require('firebase/firestore');
 import { connect } from 'react-redux';
@@ -10,7 +11,7 @@ function Profile(props) {
   const [userPosts, setUserPosts] = useState([]);
   const [user, setUser] = useState(null);
   const [following, setFollowing] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null); // State to store image URL
+  const [imageUrl, setImageUrl] = useState(); // State to store image URL
 
   useEffect(() => {
     const { currentUser, posts } = props;
@@ -87,6 +88,9 @@ function Profile(props) {
   const onLogout = () => {
     firebase.auth().signOut();
   };
+  const onEditProfile = () => {
+    navigation.navigate('Edit', { user }); 
+  };
 
   if (user === null) {
     return <View />;
@@ -108,6 +112,12 @@ function Profile(props) {
                   } 
               />
             )}
+            right={() => (
+              
+              <Chip icon='information'  onPress={() => console.log('Pressed')}style={{marginRight: 5, paddingRight: 8, paddingLeft: 8, marginBottom: 10}}> 
+              Role: {user.role} 
+              </Chip>
+            )}
           />
         </Card>
 
@@ -123,13 +133,20 @@ function Profile(props) {
               </Button>
             )}
           </View>
-        ) : (
+        ) : 
+        (
+          <View>
           <Button mode="contained-tonal" onPress={onLogout}>
             Logout
           </Button>
+          <Button mode="contained" onPress={onEditProfile}>
+            Edit
+          </Button>
+        </View>
         )}
       </View>
-
+     
+      
       <View style={styles.containerGallery}>
         <FlatList
           numColumns={3}

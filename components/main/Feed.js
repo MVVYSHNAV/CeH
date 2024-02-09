@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Image, FlatList } from 'react-native'
 import { Avatar, Card } from 'react-native-paper';
-import { Button,  Text,IconButton} from 'react-native-paper';
+import { Button,  Text,IconButton, Chip, Searchbar} from 'react-native-paper';
 import Message from './Message';
 
 
@@ -11,6 +11,7 @@ require('firebase/firestore')
 import { connect } from 'react-redux'
 
 function Feed(props) {
+    const [searchQuery, setSearchQuery] = React.useState('');
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -55,10 +56,35 @@ function Feed(props) {
           .doc(firebase.auth().currentUser.uid)
           .delete()
   }
+//   const fetchUsers = () => {
+//     firebase
+//       .firestore()
+//       .collection('users')
+//       .where('role', '==', search) // Modify this line to query based on the user's role
+//       .get()
+//       .then(snapshot => {
+//         let users = snapshot.docs.map(doc => {
+//           const data = doc.data();
+//           const id = doc.id;
+//           return { id, ...data };
+//         });
+//         setUsers(users);
+//       })
+//       .catch(error => {
+//         console.error('Error fetching users:', error);
+//       });
+//}
   
     return (
         <View style={styles.container}>
             {posts?.length===0 && <Message/>}
+            {/* <Searchbar
+                mode="bar"
+                placeholder="Search"
+                value={searchQuery}
+                style={{ width: '60%' }}
+                onChangeText={search => fetchUsers(search)}
+                /> */}
             <View style={styles.containerGallery}>
                 {posts && <FlatList
                     numColumns={1}
@@ -81,6 +107,12 @@ function Feed(props) {
                               }
                             />
                           )}
+                        //   right={() => (
+              
+                        //     <Chip icon='information'  onPress={() => console.log('Pressed')}style={{marginRight: 5, paddingRight: 8, paddingLeft: 8, marginTop: 20}}> 
+                        //         Role: {user.role} 
+                        //         </Chip>                         
+                        //          )}
                              />
                              <Text variant="titleMedium" style = {{ width:"80",height:"40",  marginLeft: 30 }}> {item.caption}</Text>
                             <Image
