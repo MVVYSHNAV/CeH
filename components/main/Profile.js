@@ -154,7 +154,11 @@ function Profile(props) {
           data={userPosts}
           renderItem={({ item }) => (
             <View style={styles.containerImage}>
-              <Image style={styles.image} source={{ uri: item.downloadURL }} />
+              { item?.downloadURL ?
+                <Image style={styles.image} source={{ uri: item.downloadURL }} />
+              :<View style={styles.textc}>
+                <Text style={{color:"white"}}> {item.textcap}</Text>
+              </View>}
             </View>
           )}
         />
@@ -176,7 +180,21 @@ const styles = StyleSheet.create({
     marginLeft: '2%',
     marginRight: '2%',
   },
+  textc: {
+    flex: 1,
+    justifyContent:"center",
+    alignItems:"center",
+    // margin: 2,
+    backgroundColor: 'black',
+    color: 'white',
+    textAlign: 'center',
+    paddingHorizontal:"4%" // Align text to the center
+  },
   containerImage: {
+    flex: 1 / 1,
+    margin: 2,
+  },
+   containerText: {
     flex: 1 / 1,
     margin: 2,
   },

@@ -21,6 +21,7 @@ import EditScreen from './components/main/EditP'
 import Onboardconn from './components/Onboardconn';
 const Stack = createStackNavigator();
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TestSave from './components/main/TestSave';
 
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -80,8 +81,6 @@ const App = () => {
 
   return (
     <Provider store={store}>
-    
-    
       <NavigationContainer>
         {onboarded?
         <Stack.Navigator initialRouteName={loggedIn ? 'Main' : 'Landing'}>
@@ -97,7 +96,8 @@ const App = () => {
             <>
               <Stack.Screen name="Ceh" component={MainScreen}  />
               <Stack.Screen name="Add" component={AddScreen}  />
-              <Stack.Screen name="Save" component={SaveScreen} />
+              <Stack.Screen name="TestSave" component={TestSave} />
+              <Stack.Screen name='Save' component={SaveScreen} />
               <Stack.Screen name="Comment" component={CommentScreen} />
               <Stack.Screen name="Edit" component={EditScreen} />
 

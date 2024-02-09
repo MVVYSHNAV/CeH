@@ -65,6 +65,7 @@ function Feed(props) {
                     horizontal={false}
                     data={posts}
                     renderItem={({ item,index }) => (
+                        
                         <Card key={index}>
                            
                         <View
@@ -83,14 +84,18 @@ function Feed(props) {
                           )}
                           right={() => (
               
-                            <Chip size='30' style={{backgroundColor: '#6B1FCB', marginRight: 5, paddingRight: 8, paddingLeft: 8, marginTop: 20}}> Role: {user.role} </Chip>
+                            <Chip size='30' style={{backgroundColor: '#6B1FCB', marginRight: 5, paddingRight: 8, paddingLeft: 8, marginTop: 20,}}> Role: {item.user.role} </Chip>
                           )}
                              />
                              <Text variant="titleMedium" style = {{ width:"80",height:"40",  marginLeft: 30 }}> {item.caption}</Text>
-                            <Image
+                                {item?.downloadURL ? 
+                                <Image
                                 style={styles.image}
-                                source={{ uri: item.downloadURL }}
-                            />
+                                source={{ uri: item.downloadURL }}/>
+                            :
+                                <View style={styles.textc}>
+                                <Text style={{color:"white"}}> {item.textcap}</Text>
+                            </View>}
                             { item.currentUserLike ?
                                 (
                                     <Button 
@@ -120,6 +125,7 @@ function Feed(props) {
                                 </Text>
                         </View>
                         </Card>
+                        
 
                     )}
 
@@ -148,6 +154,16 @@ const styles = StyleSheet.create({
         marginBottom: "5%"
 
     },
+    textc: {
+        flex: 1,
+        justifyContent:"center",
+        alignItems:"center",
+        // margin: 2,
+        backgroundColor: 'black',
+        color: 'white',
+        textAlign: 'center',
+        padding:"4%" // Align text to the center
+      },
     image: {
         flex: 1,
         aspectRatio: 1 / 1

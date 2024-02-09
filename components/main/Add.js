@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { IconButton, Button , Card} from 'react-native-paper';
 import { Camera } from 'expo-camera';
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function Add({ navigation }) {
@@ -11,6 +12,7 @@ export default function Add({ navigation }) {
   const [cameraPermission, setCameraPermission] = useState(null);
   const [imagePickerPermission, setImagePickerPermission] = useState(null);
   const [isCameraReady, setCameraReady] = useState(false);
+  
 
   useEffect(() => {
     (async () => {
@@ -94,6 +96,11 @@ export default function Add({ navigation }) {
       icon="camera"
       onPress={takePicture} /> 
       <IconButton
+      mode="contained"
+      style={{marginBottom:"4%"}}
+      icon="plus-network"
+      onPress={() => navigation.navigate('TestSave')} /> 
+      <IconButton
       mode="contained" 
       style={{marginBottom:"4%"}}
       icon="folder-plus"
@@ -103,7 +110,6 @@ export default function Add({ navigation }) {
       icon="floppy"
       style={{marginBottom:"4%"}}
       onPress={() => navigation.navigate('Save', { image })}/> 
-
       </View>
       {image && <Image source={{ uri: image }} style={{ flex: 1, marginHorizontal: "2%" }} />}
 

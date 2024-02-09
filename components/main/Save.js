@@ -56,7 +56,7 @@ export default function Save({ route, navigation }) {
       <Image source={{ uri: route.params.image }} style={styles.image} />
       <TextInput
       mode="outlined"
-        label='Caption'
+        label='Text'
         placeholder='Write a Caption...'
         style={{width:"100%", }}
         value={caption}
