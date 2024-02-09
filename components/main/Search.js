@@ -44,7 +44,7 @@ export default function Search(props) {
             onPress={() => props.navigation.navigate('Profile', { uid: item.id })}>
             <Card>
               <Card.Title
-                style={{ marginBottom: '4%' }}
+                style={{ marginBottom: '2%' }}
                 title={item.name}
                 left={() => (
                   <Avatar.Image

@@ -17,8 +17,9 @@ import MainScreen from './components/Main';
 import AddScreen from './components/main/Add';
 import SaveScreen from './components/main/Save';
 import CommentScreen from './components/main/Comment';
-import { useNavigation } from '@react-navigation/native';
+import Onboardconn from './components/Onboardconn';
 const Stack = createStackNavigator();
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -41,7 +42,19 @@ if (firebase.apps.length === 0) {
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [onboarded,setOnboarded] = useState(false)
 
+
+  const loadOnboard=async ()=>{
+    const storedOnboarded=await AsyncStorage.getItem("onboarded");
+    if(storedOnboarded){
+      setOnboarded(true);
+    }else{
+      setOnboarded(false);
+      AsyncStorage.setItem("onboarded","true")
+    }
+
+  }
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -49,6 +62,7 @@ const App = () => {
       setLoaded(true);
     });
 
+    loadOnboard();
     // Cleanup function
     return () => {
       unsubscribe();
@@ -65,13 +79,18 @@ const App = () => {
 
   return (
     <Provider store={store}>
+    
+    
       <NavigationContainer>
+        {onboarded?
         <Stack.Navigator initialRouteName={loggedIn ? 'Main' : 'Landing'}>
           {!loggedIn ? (
             <>
+              
               <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
               <Stack.Screen name="Register" component={RegisterScreen} />
               <Stack.Screen name="Login" component={LoginScreen} />
+              
             </>
           ) : (
             <>
@@ -82,6 +101,7 @@ const App = () => {
             </>
           )}
         </Stack.Navigator>
+        :<Onboardconn completed={()=>setOnboarded(true)}/>}
       </NavigationContainer>
     </Provider>
   );

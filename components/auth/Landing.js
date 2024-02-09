@@ -1,14 +1,16 @@
 import React from 'react'
 import { ImageBackground, View, StyleSheet} from 'react-native';
 import  {Text,Button } from 'react-native-paper';
+const image = {uri : "https://cdn.pixabay.com/photo/2017/04/20/13/58/library-2245807_1280.jpg"};
 
 export default function Landing( {navigation } ) {
   
   return (
+
     
     <View style={styles.containerland1}>
-       <View style={styles.containerland2}>  
-          <View style={styles.containerland3}> 
+      <ImageBackground source={image} style={{resizemode: "cover",flex: 1, justifyContent: 'center  '}}>
+      <View style={styles.containerland2}>
                 <Text style={{textAlign:"center"}} variant='displayLarge'> Ceh </Text>
                 <Text style={{textAlign:"center"}} variant='labelMedium'>#join with amoung you mingle with others </Text>  
                       <View style={styles.btncontainer}>        
@@ -20,9 +22,9 @@ export default function Landing( {navigation } ) {
                             <Button  style={styles.containerbtn2} mode='elevated'  icon="login"
                           onPress={() =>  navigation.navigate("Login")}>  Login </Button>
                         </View> 
-                      </View>
+                        </View>
+                      </ImageBackground>
                  </View>
-     </View>
   )
 }
 const styles = StyleSheet.create({

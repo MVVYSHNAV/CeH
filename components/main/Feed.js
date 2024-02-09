@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Image, FlatList } from 'react-native'
 import { Avatar, Card } from 'react-native-paper';
 import { Button,  Text,IconButton} from 'react-native-paper';
+import Message from './Message';
 
 
 
@@ -32,8 +33,8 @@ function Feed(props) {
             .collection("likes")
             .doc(firebase.auth().currentUser.uid)
             .set({})
-        // const getPost=posts.filter((post)=>postId===post.id);
-        // getPost.liked=true;
+        const getPost=posts.filter((post)=>postId===post.id);
+        getPost.liked=true;
         setPosts((prev)=>{
             return prev.map(post=>{
                 if(post.id===postId)
@@ -54,8 +55,10 @@ function Feed(props) {
           .doc(firebase.auth().currentUser.uid)
           .delete()
   }
+  
     return (
         <View style={styles.container}>
+            {posts?.length===0 && <Message/>}
             <View style={styles.containerGallery}>
                 {posts && <FlatList
                     numColumns={1}
@@ -72,8 +75,8 @@ function Feed(props) {
                             <Avatar.Image
                               size={50}
                               source={
-                                imageUrl
-                                  ? { uri: imageUrl }
+                                item.imageuri
+                                  ? { uri:item.imageuri }
                                   : require('../../assets/splash.png') // Use default image if imageUrl is null
                               }
                             />
